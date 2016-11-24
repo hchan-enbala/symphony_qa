@@ -1,8 +1,8 @@
-defmodule HW.Mixfile do
+defmodule SYMPHONY_QA.Mixfile do
   use Mix.Project
 
   def project do
-    [app: :hw,
+    [app: :symphony_qa,
      version: "0.1.0",
      elixir: "~> 1.3",
      build_embedded: Mix.env == :prod,
