@@ -1,6 +1,0 @@
-cd /home/enbala/symphony/
-mix ecto.drop
-mix ecto.create
-mix ecto.migrate
-mix test.bootstrapper
-mix s

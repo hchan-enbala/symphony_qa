@@ -1,0 +1,10 @@
+kill $(ps aux | grep -v grep  | grep mix | cut -d' ' -f4)
+echo "done"
+cd /home/enbala/symphony/
+pwd
+mix ecto.drop
+mix ecto.create
+mix ecto.migrate
+mix test.bootstrapper
+mix s &
+cd -

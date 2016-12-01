@@ -2,22 +2,15 @@
 
 Application.start :hound
 
-defmodule SetupNetworkTest do
+defmodule SymphonyQA.SetupNetworkTest do
   use Hound.Helpers
   use ExUnit.Case
-
-  #import Utilities
-
-  #setup_all do
-
-  #end
 
   test "setup network" do
 
     Hound.start_session
 
     navigate_to "http://localhost:4002"
-    IO.inspect page_title()
     assert page_title() == "Symphony"
 
     # Login
@@ -50,6 +43,7 @@ defmodule SetupNetworkTest do
     # login as new user
     navigate_to "http://localhost:4002/login"
     Utilities.login("test@example.com","password")
+    :timer.sleep(:timer.seconds(1))
     assert page_source =~ "First Portfolio"
 
     # find the root node in the graph

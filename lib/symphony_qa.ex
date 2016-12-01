@@ -1,2 +1,2 @@
-defmodule SYMPHONY_QA do
+defmodule SymphonyQA do
 end
