@@ -13,14 +13,15 @@ To run the test cases:
 
 `bash test/support/dbsetup`
 
-note1: this will kill all mix processes, reset the database, create the first admin
-note2: you may need to edit this file to specify where you have cloned symphony
+note1: dbsetup will kill all mix processes, reset the database, create the first admin
+
+note2: you may need to edit dbsetup to specify where you have cloned symphony
 
 `./test/support/chrome_driver &`
 
 `mix test hw_test.exs`
 
 
-Everytime you run the test, you will need to run dbsetup first. 
+Everytime you run the test, you will need to run dbsetup first as it requires a clean environment.
 
 
