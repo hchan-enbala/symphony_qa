@@ -1,24 +1,20 @@
-# HW
+# symphony_qa
 
-**TODO: Add description**
+Symphony integration testing via ExUnit and Hound. The test cases will drive user actions via symphony_web using a front end driver
+
+## Setup
+Check out enbala/symphony project into '/home/enbala/' or you'll need to modify one script (detailed below) 
 
 ## Installation
 
-If [available in Hex](https://hex.pm/docs/publish), the package can be installed as:
+To run the test cases:
+'mix deps.get'
+'bash test/support/dbsetup' 
+note1: this will kill all mix processes, reset the database, create the first admin
+note2: you may need to edit this file to specify where you have cloned symphony
+'./test/support/chrome_driver &'
+'mix test hw_test.exs'
 
-  1. Add `hw` to your list of dependencies in `mix.exs`:
+Everytime you run the test, you will need to run dbsetup first. 
 
-    ```elixir
-    def deps do
-      [{:hw, "~> 0.1.0"}]
-    end
-    ```
-
-  2. Ensure `hw` is started before your application:
-
-    ```elixir
-    def application do
-      [applications: [:hw]]
-    end
-    ```
 
