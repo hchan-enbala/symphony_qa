@@ -9,11 +9,20 @@ defmodule Utilities do
     session_password = find_element(:id,"session_password")
     fill_field(session_password,password)
     click({:css,".form-row:nth-last-child(2)"})
+    :timer.sleep(:timer.seconds(3))
   end
 
   def logout do
     click({:link_text, "Log Out"})
   end
+
+  def home_button do
+    header = find_element(:id, "header")
+    home = find_within_element(header, :class, "left")
+    click(home)
+    :timer.sleep(:timer.seconds(3))
+  end
+
 
   def new_portfolio(portfolio) do
     click({:class,"nav-button"})
@@ -30,7 +39,7 @@ defmodule Utilities do
     click({:css,".form-row:last-child"})
   end
 
-  def confirm_user_email do
+  def create_user_password(password) do
     #Grab dev email and click on password reset link
     in_browser_session "reset password", fn ->
       navigate_to "http://localhost:4002/emails"
@@ -39,20 +48,47 @@ defmodule Utilities do
 
       line = visible_text(password_reset)
 
+      # hack to parse the reset link - not sure how to do this better
       {index1,_} = :binary.match line , "http"
-      {index2,_} = :binary.match line , " to accept"
-      link = String.slice(line,index1..index2)
+      line = String.slice(line,index1..-1)
+      {index2,_} = :binary.match line , " to "
+      link = String.slice(line,0..index2)
 
       # set new password and logout
       navigate_to link
-      password = find_element(:id,"user_password")
-      fill_field(password,"password")
+      password_field = find_element(:id,"user_password")
+      fill_field(password_field,password)
 
       password_conf = find_element(:id,"user_password_confirmation")
-      fill_field(password_conf,"password")
+      fill_field(password_conf,password)
 
       click({:css,".form-row:last-child"})
       logout
+      change_to_default_session()
+    end
+  end
+
+  def create_user_password(password, _) do
+    #Grab dev email and click on password reset link
+    in_browser_session "reset password", fn ->
+
+      navigate_to "http://localhost:4002/emails"
+
+      password_reset = find_element(:class,"email-preview-bodies-container")
+
+      line = visible_text(password_reset)
+
+      # hack to parse the reset link - not sure how to do this better
+      {index1,_} = :binary.match line , "http"
+      line = String.slice(line,index1..-1)
+      {index2,_} = :binary.match line , " to "
+      link = String.slice(line,0..index2)
+
+      # set new password and logout
+      navigate_to link
+      :timer.sleep(:timer.seconds(2))
+      take_screenshot("/home/enbala/symphony_qa/test1.png")
+      assert page_source =~ "Invalid token"
       close_current_window()
     end
   end
@@ -125,6 +161,48 @@ defmodule Utilities do
     fill_field(element, max_off_s)
     click({:css,".form-row:last-child"})
     :timer.sleep(:timer.seconds(1))
+  end
+
+  def forget_password(email) do
+    # click forget password on login screen
+    click({:css,".form-row:last-child"})
+    # Fill in user email in forget password dialog, click submit
+    element = find_element(:id, "user_email")
+    fill_field(element, email)
+    click({:css,".form-row:last-child"})
+  end
+
+  def invite_user_dialog(email_list) do
+    # list of user:password tuples
+    :timer.sleep(:timer.seconds(1))
+    click({:id,"show-item"})
+    Enum.each(email_list, &(invite_user(&1)))
+  end
+
+  def invite_user(email_password) do
+    {email,password} = email_password
+    click({:link_text, "Invite User"})
+    element = find_element(:id, "user_email")
+    fill_field(element, email)
+    click({:css,".form-row:last-child"})
+    :timer.sleep(:timer.seconds(2))
+    create_user_password(password)
+  end
+
+  def promote_user(email) do
+    click({:id,"show-item"})
+    click({:link_text, email})
+    click({:class, "warning-button"})
+    :timer.sleep(:timer.seconds(2))
+    accept_dialog
+  end
+
+  def demote_user(email) do
+    click({:id,"show-item"})
+    click({:link_text, email})
+    click({:class, "warning-button"})
+    :timer.sleep(:timer.seconds(2))
+    accept_dialog
   end
 
 end

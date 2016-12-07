@@ -1,0 +1,6 @@
+kill $(ps aux | grep -v grep | grep mix | awk '{print $2}')
+cd /home/enbala/symphony/
+mix ecto.reset
+mix s &
+cd -
+sleep 5

@@ -1,12 +1,27 @@
 # Sample test case using hound
 
+# Test Steps:
+#   Create Portfolio
+#   Create Admin
+#   Confirm user email
+#   Create node, zone, battery, meter, asset
+#   Logout
+
 Application.start :hound
 
 defmodule SymphonyQA.SetupNetworkTest do
   use Hound.Helpers
   use ExUnit.Case
 
+  #setup_all do
+#    IO.puts "Starting setup"
+#    System.cmd("bash",["test/support/dbsetup","&"])
+#    :ok
+#  end
+
   test "setup network" do
+
+    IO.puts "Starting setup"
 
     Hound.start_session
 
@@ -34,7 +49,7 @@ defmodule SymphonyQA.SetupNetworkTest do
     assert page_source =~ "test@example.com"
     assert page_source =~ "A confirmation email has been sent to test@example.com"
 
-    Utilities.confirm_user_email()
+    Utilities.create_user_password("password")
 
     # log out
     Utilities.logout
@@ -43,7 +58,6 @@ defmodule SymphonyQA.SetupNetworkTest do
     # login as new user
     navigate_to "http://localhost:4002/login"
     Utilities.login("test@example.com","password")
-    :timer.sleep(:timer.seconds(1))
     assert page_source =~ "First Portfolio"
 
     # find the root node in the graph
