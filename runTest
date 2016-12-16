@@ -1,6 +1,8 @@
-#./test/support/adminOnly
-#mix test test/hw_test.exs
 #./test/support/devSeed
 #mix test test/login_test.exs
+#./test/support/devSeed
+#mix test test/user_management_test.exs
+#./test/support/adminOnly
+#mix test test/hw_test.exs
 ./test/support/devSeed
-mix test test/user_management_test.exs
+mix test test/test.exs

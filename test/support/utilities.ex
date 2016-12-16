@@ -179,7 +179,7 @@ defmodule Utilities do
     Enum.each(email_list, &(invite_user(&1)))
   end
 
-  def invite_user(email_password) do
+  defp invite_user(email_password) do
     {email,password} = email_password
     click({:link_text, "Invite User"})
     element = find_element(:id, "user_email")
@@ -203,6 +203,28 @@ defmodule Utilities do
     click({:class, "warning-button"})
     :timer.sleep(:timer.seconds(2))
     accept_dialog
+  end
+
+  def show_asset do
+    click({:id,"show-item"})
+  end
+
+  def upload_vpp(path) do
+    click({:link_text, "Upload VPP Plan"})
+    element = find_element(:id, "feeder_node_plan_csv")
+    #attach_file(element,path)
+    fill_field(element,"/home/enbala/symphony_qa/VPP_Plan.csv")
+    :timer.sleep(:timer.seconds(10))
+    click({:css,".form-row:last-child"})
+    :timer.sleep(:timer.seconds(200))
+    take_screenshot("/home/enbala/symphony_qa/upload.png")
+  end
+
+  defp attach_file(element, input) do
+    import Hound.RequestUtils
+    session_id = Hound.current_session_id
+    make_req(:post, "session/#{session_id}/element/#{element}/value", %{value: ["#{input}"]})
+
   end
 
 end
